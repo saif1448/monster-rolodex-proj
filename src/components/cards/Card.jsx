@@ -1,8 +1,8 @@
 import React from 'react'
 import './Cards.css'
 
-const Card = ({monster}) => {
-    const { name, id, email } = monster
+const Card = ({monster: {name, id, email}}) => {
+    // const {  } = monster
     return (
         <div className='card-container' key={id}>
             <img alt={`monster ${name}`}
