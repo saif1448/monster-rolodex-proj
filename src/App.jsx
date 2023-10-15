@@ -8,6 +8,8 @@ function App() {
   const [monsterList, setMonsterList] = useState([])
   const [queryString, setQueryString] = useState("")
   const [error, setError] = useState("")
+  const [filteredMonsters, setFilteredMonsters] = useState(monsterList)
+
 
   const onSearchChange = (event) => {
     const query = event.target.value.toLowerCase()
@@ -22,20 +24,26 @@ function App() {
   //   }
   // }, [])
 
-  useEffect(() =>{
+  useEffect(() => {
     apiClient.get('/users')
-    .then(monsterList => setMonsterList(monsterList.data))
-    .catch(err => setError(err.message))
+      .then(monsterList => setMonsterList(monsterList.data))
+      .catch(err => setError(err.message))
   }, [])
 
-  const filtetedMonsterList = monsterList.filter(monster => monster.name.toLowerCase().includes(queryString))
+  useEffect(() => {
+    const filteredMonsterList = monsterList.filter(
+      monster => monster.name.toLowerCase().includes(queryString))
+    setFilteredMonsters(filteredMonsterList)
+  }, [monsterList, queryString])
+
+
 
   return (
     <>
       {error && <h3>{error}</h3>}
       <h1 className="app-title">Monster Rolodox</h1>
       <SearchBox placeholder='monster name' className='search-box' onSearchChange={onSearchChange} />
-      <CardList monsters={filtetedMonsterList} />
+      <CardList monsters={filteredMonsters} />
 
     </>
   )
